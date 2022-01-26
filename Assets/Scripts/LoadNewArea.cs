@@ -21,6 +21,7 @@ public class LoadNewArea : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        //If player lands in area, load new area
         if (other.gameObject.name == "Player")
         {
             SceneManager.LoadScene(levelToLoad);
