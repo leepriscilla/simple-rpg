@@ -6,11 +6,14 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed;
     public Vector2 lastMove;
+    public float attackTime;
 
     private Animator anim;
     private Rigidbody2D myRigidbody;
     private bool playerMoving;
     private static bool playerExists;
+    private bool attacking;
+    private float attackTimeCounter;
 
     // Start is called before the first frame update
     void Start()
@@ -35,32 +38,54 @@ public class PlayerController : MonoBehaviour
     {
         playerMoving = false;
 
-        //Player is moving left/right
-        if(Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f)
+        if(!attacking)
         {
-            //transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f, 0f));
-            myRigidbody.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * moveSpeed, myRigidbody.velocity.y);
-            playerMoving = true;
-            lastMove = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
+            //Player is moving left/right
+            if(Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f)
+            {
+                //transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f, 0f));
+                myRigidbody.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * moveSpeed, myRigidbody.velocity.y);
+                playerMoving = true;
+                lastMove = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
+            }
+
+            //Player is moving up/down
+            if(Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f)
+            {
+                //transform.Translate(new Vector3(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime, 0f));
+                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, Input.GetAxisRaw("Vertical") * moveSpeed);            
+                playerMoving = true;
+                lastMove = new Vector2(0f, Input.GetAxisRaw("Vertical"));
+            }
+
+            //Player is not moving left/right, get direction player is facing.
+            if(Input.GetAxisRaw("Horizontal") < 0.5f && Input.GetAxisRaw("Horizontal") > -0.5f){
+                myRigidbody.velocity = new Vector2(0f, myRigidbody.velocity.y);
+            }
+
+            //Player is not moving up/down, get direction player is facing
+            if(Input.GetAxisRaw("Vertical") < 0.5f && Input.GetAxisRaw("Vertical") > -0.5f){
+                myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, 0f);
+            }
+
+            if(Input.GetKeyDown(KeyCode.J))
+            {
+                attackTimeCounter = attackTime;
+                attacking = true;
+                myRigidbody.velocity = Vector2.zero; //create Vector2 with value, (0,0)
+                anim.SetBool("Attack", true);
+            }
         }
 
-        //Player is moving up/down
-        if(Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f)
+        if(attackTimeCounter > 0)
         {
-            //transform.Translate(new Vector3(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime, 0f));
-            myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, Input.GetAxisRaw("Vertical") * moveSpeed);            
-            playerMoving = true;
-            lastMove = new Vector2(0f, Input.GetAxisRaw("Vertical"));
+            attackTimeCounter -= Time.deltaTime;
         }
 
-        //Player is not moving left/right, get direction player is facing.
-        if(Input.GetAxisRaw("Horizontal") < 0.5f && Input.GetAxisRaw("Horizontal") > -0.5f){
-            myRigidbody.velocity = new Vector2(0f, myRigidbody.velocity.y);
-        }
-
-        //Player is not moving up/down, get direction player is facing
-        if(Input.GetAxisRaw("Vertical") < 0.5f && Input.GetAxisRaw("Vertical") > -0.5f){
-            myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, 0f);
+        if(attackTimeCounter <= 0)
+        {
+            attacking = false;
+            anim.SetBool("Attack", false);
         }
 
         anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
