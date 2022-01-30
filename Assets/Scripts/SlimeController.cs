@@ -70,11 +70,13 @@ public class SlimeController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         //If slime collides with Player, set Player to inactive and reload the scene
-        if(other.gameObject.name == "Player")
+        
+        /*if(other.gameObject.name == "Player")
         {
             other.gameObject.SetActive(false);
             reloading = true;
             thePlayer = other.gameObject;
         }
+        */
     }
 }
