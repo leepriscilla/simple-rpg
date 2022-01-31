@@ -10,12 +10,14 @@ public class PlayerHealthManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //At the beginning of the game, player has max health
         playerCurrentHealth = playerMaxHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //If player health falls to 0, respawn
         if(playerCurrentHealth <= 0)
         {
             gameObject.SetActive(false);
