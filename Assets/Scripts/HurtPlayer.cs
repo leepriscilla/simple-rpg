@@ -5,6 +5,7 @@ using UnityEngine;
 public class HurtPlayer : MonoBehaviour
 {
     public int damageToGive;
+    public GameObject damageNumber;
 
     // Start is called before the first frame update
     void Start()
@@ -24,5 +25,9 @@ public class HurtPlayer : MonoBehaviour
         {
             other.gameObject.GetComponent<PlayerHealthManager>().HurtPlayer(damageToGive);
         }
+
+        //Creates game object to display damage
+        var clone = (GameObject) Instantiate(damageNumber, other.transform.position, Quaternion.Euler(Vector3.zero));
+        clone.GetComponent<FloatingNumbers>().damageNumber = damageToGive;
     }
 }
