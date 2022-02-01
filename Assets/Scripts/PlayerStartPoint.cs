@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerStartPoint : MonoBehaviour
 {
     public Vector2 startDirection;
+    public string pointName;
 
     private PlayerController thePlayer;
     private CameraController theCamera;
@@ -14,12 +15,16 @@ public class PlayerStartPoint : MonoBehaviour
     {
         //Sets player position to start point position
         thePlayer = FindObjectOfType<PlayerController>();
-        thePlayer.transform.position = transform.position;
-        thePlayer.lastMove = startDirection;
 
-        //Sets camera position to start point position
-        theCamera = FindObjectOfType<CameraController>();
-        theCamera.transform.position = new Vector3(transform.position.x, transform.position.y, theCamera.transform.position.z);
+        if(thePlayer.startPoint == pointName)
+        {
+            thePlayer.transform.position = transform.position;
+            thePlayer.lastMove = startDirection;
+
+            //Sets camera position to start point position
+            theCamera = FindObjectOfType<CameraController>();
+            theCamera.transform.position = new Vector3(transform.position.x, transform.position.y, theCamera.transform.position.z);
+        }
     }
 
     // Update is called once per frame

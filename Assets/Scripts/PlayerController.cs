@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public Vector2 lastMove;
     public float attackTime;
+    public string startPoint;
 
     private Animator anim;
     private Rigidbody2D myRigidbody;
