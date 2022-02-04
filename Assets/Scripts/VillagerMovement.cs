@@ -8,11 +8,15 @@ public class VillagerMovement : MonoBehaviour
     public bool isWalking;
     public float walkTime;
     public float waitTime;
+    public Collider2D walkZone;
 
     private Rigidbody2D myRigidbody;
     private float walkCounter;
     private float waitCounter;
     private int WalkDirection;
+    private Vector2 minWalkPoint;
+    private Vector2 maxWalkPoint;
+    private bool hasWalkZone;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +27,15 @@ public class VillagerMovement : MonoBehaviour
         walkCounter = walkTime;
 
         ChooseDirection();
+
+        //if there is something in walkZone
+        if(walkZone != null)
+        {
+            minWalkPoint = walkZone.bounds.min; //bottom left
+            maxWalkPoint = walkZone.bounds.max; //bottom right
+            hasWalkZone = true;
+        }
+
     }
 
     // Update is called once per frame
@@ -34,17 +47,37 @@ public class VillagerMovement : MonoBehaviour
 
             switch(WalkDirection)
             {
-                case 0:
-                    myRigidbody.velocity = new Vector2(0, moveSpeed);
+                case 0: //up
+                    myRigidbody.velocity = new Vector2(0, moveSpeed); 
+                    if(hasWalkZone && transform.position.y > maxWalkPoint.y)
+                    {
+                        isWalking = false;
+                        waitCounter = waitTime;
+                    }
                     break;
-                case 1:
-                    myRigidbody.velocity = new Vector2(moveSpeed, 0);                    
+                case 1: //right
+                    myRigidbody.velocity = new Vector2(moveSpeed, 0);
+                    if(hasWalkZone && transform.position.x > maxWalkPoint.x)
+                    {
+                        isWalking = false;
+                        waitCounter = waitTime;
+                    }                    
                     break;
-                case 2:
-                    myRigidbody.velocity = new Vector2(0, -moveSpeed);                    
+                case 2: //down
+                    myRigidbody.velocity = new Vector2(0, -moveSpeed);
+                    if(hasWalkZone && transform.position.y < minWalkPoint.y)
+                    {
+                        isWalking = false;
+                        waitCounter = waitTime;
+                    }                    
                     break;
-                case 3:
-                    myRigidbody.velocity = new Vector2(-moveSpeed, 0);                    
+                case 3: //left
+                    myRigidbody.velocity = new Vector2(-moveSpeed, 0);
+                    if(hasWalkZone && transform.position.x < minWalkPoint.x)
+                    {
+                        isWalking = false;
+                        waitCounter = waitTime;
+                    }                    
                     break;
             }
             
