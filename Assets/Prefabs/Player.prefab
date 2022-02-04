@@ -99,6 +99,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  lastMove: {x: 0, y: 0}
+  attackTime: 0
+  startPoint: 
+  diagonalMoveModifier: 0.75
 --- !u!95 &2096156905406403159
 Animator:
   serializedVersion: 3

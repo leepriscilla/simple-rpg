@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueHolder : MonoBehaviour
 {
-    public string dialog;
     public string[] dialogLines;
-
     private DialogueManager dMan;
 
     // Start is called before the first frame update
@@ -33,6 +32,12 @@ public class DialogueHolder : MonoBehaviour
                     dMan.dialogLines = dialogLines;
                     dMan.currentLine = 0;
                     dMan.ShowDialog();
+                }
+
+                if(GetComponentInParent<VillagerMovement>() != null)
+                {
+                    //Stop villager movement
+                    GetComponentInParent<VillagerMovement>().canMove = false;
                 }
             }
         }

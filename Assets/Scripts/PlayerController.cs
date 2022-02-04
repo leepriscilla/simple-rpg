@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float attackTime;
     public string startPoint;
     public float diagonalMoveModifier;
+    public bool canMove;
 
     private Animator anim;
     private Rigidbody2D myRigidbody;
@@ -34,12 +35,20 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        canMove = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         playerMoving = false;
+
+        if(!canMove)
+        {
+            myRigidbody.velocity = Vector2.zero;
+            return;
+        }
 
         if(!attacking)
         {

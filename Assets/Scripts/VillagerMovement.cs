@@ -9,6 +9,7 @@ public class VillagerMovement : MonoBehaviour
     public float walkTime;
     public float waitTime;
     public Collider2D walkZone;
+    public bool canMove;
 
     private Rigidbody2D myRigidbody;
     private float walkCounter;
@@ -17,11 +18,13 @@ public class VillagerMovement : MonoBehaviour
     private Vector2 minWalkPoint;
     private Vector2 maxWalkPoint;
     private bool hasWalkZone;
+    private DialogueManager dMan;
 
     // Start is called before the first frame update
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
+        dMan = FindObjectOfType<DialogueManager>();
 
         waitCounter = waitTime;
         walkCounter = walkTime;
@@ -36,11 +39,23 @@ public class VillagerMovement : MonoBehaviour
             hasWalkZone = true;
         }
 
+        canMove = true;
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        if(!dMan.dialogActive)
+        {
+            canMove = true;
+        }
+
+        if(!canMove)
+        {
+            myRigidbody.velocity = Vector2.zero;
+            return;
+        }
+
         if(isWalking)
         {
             walkCounter -= Time.deltaTime;
