@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/house_inside.unity
     guid: ac6ea0a5d6d277949a202b147179f1c1
+  - enabled: 1
+    path: Assets/Scenes/test_village.unity
+    guid: f8e9af8bbfd989546840ad2996174f6d
   m_configObjects: {}
